@@ -1,6 +1,7 @@
 #!/bin/env bash
 
-# Check if MySQL is already running
+mysql_user="$1"
+# Check if MySQL server is already running
 if mysqladmin ping &>/dev/null; then
     echo "MySQL is already running"
 else
@@ -12,19 +13,17 @@ else
         exit 1
     fi
 fi
-
 # Prompt the user for MySQL credentials
-read -p "Enter MySQL username: " mysql_user
 read -s -p "Enter MySQL password: " mysql_password
 echo ""
 
 # Validate the credentials
-if ! mysql -u "$mysql_user" -p"$mysql_password" -e "SELECT 1" &>/dev/null; then
+if ! mysql -u "$mysql_user" -p"$mysql_password" -e "SELECT 1" &>/dev/null
+then
     echo "Invalid MySQL credentials"
     exit 1
 fi
-
-# Connect to MySQL
+# Connect to MySQL server
 mysql -u "$mysql_user" -p"$mysql_password"
 
 
